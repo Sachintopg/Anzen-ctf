@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Challenge</title>
+</head>
+<body>
+    <h1>XSS Challenge</h1>
+    <p>Can you trigger an XSS alert?</p>
+    <form action="">
+        <label for="name">Enter your name:</label>
+        <input type="text" id="name" name="name">
+        <input type="submit" value="Submit">
+    </form>
+    <p id="result"></p>
+
+    <script>
+        // Get the name from the URL parameters
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get('name');
+        
+        // Check if a name is provided and display it
+        if (name) {
+            // This is where the vulnerability exists - unsanitized user input is directly injected into the page
+            document.getElementById('result').innerHTML = "Hello, " + name;
+        }
+    </script>
+</body>
+</html>
