@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XSS Challenge</title>
+    <title>XSS Flag Challenge</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,11 +41,11 @@
     </style>
 </head>
 <body>
-    <h1>XSS Challenge</h1>
-    <p>Can you trigger an XSS alert?</p>
+    <h1>XSS Flag Challenge</h1>
+    <p>Enter the payload to receive the flag:</p>
     <form action="" onsubmit="handleSubmit(event)">
-        <label for="name">Enter your name:</label>
-        <input type="text" id="name" name="name" required>
+        <label for="input">Input:</label>
+        <input type="text" id="input" name="input" required>
         <input type="submit" value="Submit">
     </form>
     <p id="result"></p>
@@ -54,14 +54,13 @@
         function handleSubmit(event) {
             event.preventDefault(); // Prevent the form from submitting normally
 
-            const params = new URLSearchParams(window.location.search);
-            const name = document.getElementById('name').value;
+            const input = document.getElementById('input').value;
 
-            // Check if the input includes the <script> tag
-            if (name.includes("<script>")) {
-                document.getElementById('result').innerHTML = "Anzen CTF{0wn3d_y0u}";
+            // Check if the input matches the payload
+            if (input === "<script>alert('Anzen CTF{0wn3d_y0u}');</script>") {
+                alert('Anzen CTF{0wn3d_y0u}'); // Show alert with the flag
             } else {
-                document.getElementById('result').innerHTML = "Hello, " + name;
+                document.getElementById('result').innerHTML = "Incorrect payload.";
             }
         }
     </script>
