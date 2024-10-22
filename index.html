@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CTF Challenge</title>
+    <title>CTF Challenge Blog</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
@@ -14,16 +14,29 @@
         header {
             background-color: #007BFF;
             color: white;
-            padding: 15px 0;
+            padding: 20px 0;
             text-align: center;
+            animation: fadeIn 1s;
         }
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 30px auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s ease-in-out;
+        }
+        h1, h2 {
+            margin: 0;
+            padding: 10px 0;
+        }
+        h2 {
+            color: #007BFF;
+        }
+        p {
+            line-height: 1.6;
+            margin: 10px 0;
         }
         input {
             padding: 10px;
@@ -31,6 +44,11 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             margin-bottom: 10px;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #007BFF;
+            outline: none;
         }
         button {
             padding: 10px 15px;
@@ -40,6 +58,7 @@
             border-radius: 5px;
             cursor: pointer;
             width: 100%;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #218838;
@@ -52,19 +71,31 @@
             position: relative;
             bottom: 0;
             width: 100%;
+            margin-top: 20px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
  
 <header>
-    <h1>CTF Challenge</h1>
+    <h1>CTF Challenge Blog</h1>
 </header>
  
 <div class="container">
-    <h2>Enter the Payload</h2>
-    <input type="text" id="input" placeholder="Type Here" />
+    <h2>Join Our CTF Challenge!</h2>
+    <p>Welcome to our Capture The Flag (CTF) challenge! In this challenge, you will need to submit a specific payload to uncover a hidden flag. Can you do it?</p>
+    <p>Enter the payload below:</p>
+    <input type="text" id="input" placeholder="Type -alert(xss)-..." />
     <button onclick="submitPayload()">Submit</button>
+    <p id="result" style="margin-top: 10px;"></p>
 </div>
  
 <footer>
@@ -89,10 +120,15 @@
     // Handle messages received from the server
     socket.onmessage = function(event) {
         const response = JSON.parse(event.data);
+        const resultElement = document.getElementById('result');
         if (response.valid) {
-            alert('Correct Payload: ' + response.flag);
+            resultElement.textContent = 'Correct Payload: ' + response.flag;
+            resultElement.style.color = '#28a745'; // Green color for success
+            resultElement.style.animation = 'fadeIn 0.5s';
         } else {
-            alert('Incorrect payload. Try again.');
+            resultElement.textContent = 'Incorrect payload. Try again.';
+            resultElement.style.color = '#dc3545'; // Red color for error
+            resultElement.style.animation = 'fadeIn 0.5s';
         }
     };
 
