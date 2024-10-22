@@ -63,8 +63,8 @@
  
 <div class="container">
     <h2>Enter the Payload</h2>
-    <input type="text" id="input" placeholder="Type -alert(xss)-..." />
-    <button onclick="triggerAlert()">Submit</button>
+    <input type="text" id="input" placeholder="Type the payload..." />
+    <button onclick="submitPayload()">Submit</button>
 </div>
  
 <footer>
@@ -72,13 +72,27 @@
 </footer>
  
 <script>
-    function triggerAlert() {
+    function submitPayload() {
         const inputValue = document.getElementById('input').value;
-        if (inputValue === '-alert(xss)-') {
-            alert('Anzen CTF{alert}');
-        } else {
-            alert('Incorrect payload. Please try again.');
-        }
+
+        // Send the payload to the server for validation
+        fetch('/validate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ payload: inputValue })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.valid) {
+                alert('Correct Payload: ' + data.flag);
+            } else {
+                alert('Incorrect payload. Try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while submitting the payload.');
+        });
     }
 </script>
  
