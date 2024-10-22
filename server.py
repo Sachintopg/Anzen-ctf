@@ -8,7 +8,7 @@ def validate_payload():
     data = request.json
     
     # Check for the exact match of '-alert(xss)-'
-    correct_payload = '-alert(xss)-'
+    correct_payload = '-alert(1)-'
     
     if data and data['payload'].strip() == correct_payload:
         flag = "Anzen CTF{alert}"
