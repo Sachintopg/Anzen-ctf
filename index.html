@@ -73,7 +73,12 @@
  
 <script>
     function submitPayload() {
-        const inputValue = document.getElementById('input').value.trim(); // trim spaces
+        const inputValue = document.getElementById('input').value.trim();
+        const button = document.querySelector('button');
+        
+        button.disabled = true; // Disable the button to prevent multiple submissions
+        button.textContent = 'Submitting...'; // Change button text
+
         fetch('/validate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -81,6 +86,9 @@
         })
         .then(response => response.json())
         .then(data => {
+            button.disabled = false; // Re-enable the button
+            button.textContent = 'Submit'; // Reset button text
+
             if (data.valid) {
                 alert('Correct Payload: ' + data.flag);
             } else {
@@ -90,6 +98,8 @@
         .catch(error => {
             console.error('Error:', error);
             alert('An error occurred while submitting the payload.');
+            button.disabled = false; // Ensure button is re-enabled on error
+            button.textContent = 'Submit'; // Reset button text
         });
     }
 </script>
