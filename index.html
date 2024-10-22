@@ -73,9 +73,7 @@
  
 <script>
     function submitPayload() {
-        const inputValue = document.getElementById('input').value;
-
-        // Send the payload to the server for validation
+        const inputValue = document.getElementById('input').value.trim(); // trim spaces
         fetch('/validate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

@@ -6,8 +6,11 @@ app = Flask(__name__)
 @app.route('/validate', methods=['POST'])
 def validate_payload():
     data = request.json
-    # Check if the submitted payload matches the correct one
-    if data['payload'] == '-alert(xss)-':
+    
+    # Check for the exact match of '-alert(xss)-'
+    correct_payload = '-alert(xss)-'
+    
+    if data and data['payload'].strip() == correct_payload:
         flag = "Anzen CTF{alert}"
         return jsonify({"valid": True, "flag": flag})
     else:
