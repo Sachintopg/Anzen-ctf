@@ -2,26 +2,24 @@ import asyncio
 import websockets
 import json
 
-async def echo(websocket, path):
+# Function to handle incoming WebSocket connections
+async def handler(websocket, path):
     async for message in websocket:
         data = json.loads(message)
-        payload = data.get("payload")
-        
-        # Validate payload
+        payload = data.get('payload')
+        response = {}
+
         if payload == '-alert(xss)-':
-            response = {
-                "valid": True,
-                "flag": "Anzen CTF{alert}"
-            }
+            response['valid'] = True
+            response['flag'] = 'Anzen CTF{alert}'
         else:
-            response = {
-                "valid": False
-            }
+            response['valid'] = False
         
         await websocket.send(json.dumps(response))
 
-start_server = websockets.serve(echo, "localhost", 8080)
+# Start the WebSocket server
+start_server = websockets.serve(handler, 'localhost', 8080)
 
+# Run the server
 asyncio.get_event_loop().run_until_complete(start_server)
-print("WebSocket server is running on ws://localhost:8080")
 asyncio.get_event_loop().run_forever()
