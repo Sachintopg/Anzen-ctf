@@ -3,66 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XSS Flag Challenge</title>
+    <title>CTF Challenge</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
             padding: 20px;
-            background-color: #000; /* Black background */
-            color: #fff; /* White text */
+            background-color: #fff;
             border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        h1 {
-            color: #ba0303; /* Red heading */
-        }
-        input[type="text"] {
+        input {
             padding: 10px;
-            width: 300px;
+            width: calc(100% - 22px);
+            border: 1px solid #ccc;
+            border-radius: 5px;
             margin-bottom: 10px;
-            border: 1px solid #ba0303; /* Red border for input */
-            background-color: #fff; /* White background for input */
-            color: #000; /* Black text for input */
         }
-        input[type="submit"] {
+        button {
             padding: 10px 15px;
-            background-color: #ba0303; /* Red button */
-            color: #fff; /* White text for button */
+            background-color: #28a745;
+            color: white;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
+            width: 100%;
         }
-        input[type="submit"]:hover {
-            background-color: #a00202; /* Darker red on hover */
+        button:hover {
+            background-color: #218838;
         }
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
-            color: #ba0303; /* Red text for result */
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            background-color: #007BFF;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
         }
     </style>
 </head>
 <body>
-    <h1>XSS Flag Challenge</h1>
-    <p>Enter the payload to receive the flag:</p>
-    <form action="" onsubmit="handleSubmit(event)">
-        <label for="input">Input:</label>
-        <input type="text" id="input" name="input" required>
-        <input type="submit" value="Submit">
-    </form>
-    <p id="result"></p>
-
-    <script>
-        function handleSubmit(event) {
-            event.preventDefault(); // Prevent the form from submitting normally
-
-            const input = document.getElementById('input').value;
-
-            // Check if the input matches the payload
-            if (input === "<script>alert('Anzen CTF{0wn3d_y0u}');</script>") {
-                alert('Anzen CTF{0wn3d_y0u}'); // Show alert with the flag
-            } else {
-                document.getElementById('result').innerHTML = "Incorrect payload.";
-            }
+ 
+<header>
+    <h1>CTF Challenge</h1>
+</header>
+ 
+<div class="container">
+    <h2>Enter the Payload</h2>
+    <input type="text" id="input" placeholder="Type -alert(xss)-..." />
+    <button onclick="triggerAlert()">Submit</button>
+</div>
+ 
+<footer>
+    <p>&copy; 2024 CTF Events. All rights reserved.</p>
+</footer>
+ 
+<script>
+    function triggerAlert() {
+        const inputValue = document.getElementById('input').value;
+        if (inputValue === '-alert(xss)-') {
+            alert('Anzen CTF{alert}');
+        } else {
+            alert('Incorrect payload. Please try again.');
         }
-    </script>
+    }
+</script>
+ 
 </body>
 </html>
