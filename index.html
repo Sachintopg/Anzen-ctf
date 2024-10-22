@@ -64,7 +64,7 @@
 <div class="container">
     <h2>Enter the Payload</h2>
     <input type="text" id="input" placeholder="Type -alert(xss)-..." />
-    <button onclick="triggerAlert()">Submit</button>
+    <button onclick="submitPayload()">Submit</button>
 </div>
  
 <footer>
@@ -72,7 +72,33 @@
 </footer>
  
 <script>
-    var _0x3b87=['Incorrect\x20payload.\x20Please\x20try\x20again.','Anzen\x20CTF{alert}','value','input'];(function(_0x233270,_0x27bb35){var _0x8e21b7=function(_0x5a4f2f){while(--_0x5a4f2f){_0x233270['push'](_0x233270['shift']());}};_0x8e21b7(++_0x27bb35);}(_0x3b87,0x128));var _0x5a4f=function(_0x5eb9c0,_0x49b524){_0x5eb9c0=_0x5eb9c0-0x0;var _0x4d0d22=_0x3b87[_0x5eb9c0];return _0x4d0d22;};function triggerAlert(){const _0x1ef603=document['getElementById'](_0x5a4f('0x2'))[_0x5a4f('0x1')];if(_0x1ef603==='-alert(xss)-'){alert(_0x5a4f('0x0'));}else{alert(_0x5a4f('0x3'));}};
+    // Create a new WebSocket connection
+    const socket = new WebSocket('ws://localhost:8080');
+
+    socket.onopen = function() {
+        console.log("Connection established");
+    };
+
+    function submitPayload() {
+        const inputValue = document.getElementById('input').value;
+        
+        // Send the payload to the server
+        socket.send(JSON.stringify({ payload: inputValue }));
+    }
+
+    // Handle messages received from the server
+    socket.onmessage = function(event) {
+        const response = JSON.parse(event.data);
+        if (response.valid) {
+            alert('Correct Payload: ' + response.flag);
+        } else {
+            alert('Incorrect payload. Try again.');
+        }
+    };
+
+    socket.onerror = function(error) {
+        console.error("WebSocket error:", error);
+    };
 </script>
  
 </body>

@@ -1,25 +1,25 @@
-from flask import Flask, request, jsonify
+import asyncio
+import websockets
+import json
 
-app = Flask(__name__)
+# Function to handle incoming WebSocket connections
+async def handler(websocket, path):
+    async for message in websocket:
+        data = json.loads(message)
+        payload = data.get('payload')
+        response = {}
 
-# Route for validating the payload
-@app.route('/validate', methods=['POST'])
-def validate_payload():
-    data = request.json
-    
-    # Check for the exact match of '-alert(xss)-'
-    correct_payload = '-alert(xss)-'
-    
-    if data and data['payload'].strip() == correct_payload:
-        try:
-            # Execute the payload as JavaScript code
-            eval(data['payload'])
-            flag = "Anzen CTF{alert}"
-            return jsonify({"valid": True, "flag": flag})
-        except Exception as e:
-            return jsonify({"valid": False, "error": str(e)})
-    else:
-        return jsonify({"valid": False})
+        if payload == '-alert(xss)-':
+            response['valid'] = True
+            response['flag'] = 'Anzen CTF{alert}'
+        else:
+            response['valid'] = False
+        
+        await websocket.send(json.dumps(response))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Start the WebSocket server
+start_server = websockets.serve(handler, 'localhost', 8080)
+
+# Run the server
+asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()
